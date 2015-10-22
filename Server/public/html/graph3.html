@@ -1,0 +1,63 @@
+
+var colors = ["#9E0041","#C32F4B","#E1514B","#F47245","#FB9F59","#FEC574","#FAE38C","#EAF195","#C7E89E"];
+
+var width = 500,
+    height = 500,
+    radius = Math.min(width, height) / 2,
+    innerRadius = 0.4 * radius;
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d,i) { return values[i]; });
+
+
+var arc = d3.svg.arc()
+  .innerRadius(innerRadius)
+  .outerRadius(function (d,i) { 
+  	if (partValues[i] == 0) {
+  		return (radius - innerRadius) * 0.6 + innerRadius; 
+  	}
+    else {
+    	return (radius - innerRadius)* 0.7 + innerRadius; 
+    }
+  });
+
+
+var outerArc = d3.svg.arc()
+	.innerRadius(radius * 0.9)
+	.outerRadius(radius);
+
+
+var svg = d3.select("body").append("svg")
+    	.attr("width", width)
+    	.attr("height", height)
+
+    .append("g")
+    	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    
+
+
+//d3.csv('viz2.csv', function(error, data) {
+
+//  data.forEach(function(d) {
+//    d.color  = d.color;
+//    d.number = d.number;
+//    d.score  = d.score;
+//    d.width  = d.number;
+//    d.religion  =  d.religion;
+//  }
+
+  
+  var path = svg.selectAll("body")
+      .data(pie(values))
+    .enter().append("path")
+      .attr("fill", function(d,i) { return colors[i]; })
+      .attr("d", arc);
+
+//});
+
+
+</script>
+
+
+

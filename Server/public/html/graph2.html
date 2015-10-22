@@ -1,0 +1,114 @@
+var colors = ["#9E0041", "#C32F4B", "#E1514B", "#F47245", "#FB9F59", "#FEC574", "#FAE38C", "#EAF195", "#C7E89E"];
+
+
+var width = 400,
+    height = 400,
+    radius = Math.min(width, height) / 2,
+    innerRadius = 0.6 * radius;
+    tempOuterRadius = (radius - innerRadius) * 0.6 + innerRadius;
+    outerRadius = function (d, i) {
+        if (partValues[i] == 0) {
+            return (radius - innerRadius) * 0.6 + innerRadius;
+        } else {
+            return (radius - innerRadius) * 0.75 + innerRadius;
+        }
+    }
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function (d, i) {
+    return values[i];
+});
+
+var tempArc = d3.svg.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(tempOuterRadius);
+
+var arc = d3.svg.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius);
+
+
+
+var outerArc = d3.svg.arc()
+    .innerRadius(1.05 * radius)
+    .outerRadius(1.05 * radius);
+
+
+var svg = d3.select("#graph").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("align","center")
+
+    .append("g")
+    .attr("transform", "translate(" + width / 1.5 + "," + height / 1.5 + ")");
+
+var slices_group = svg.append("g")
+    .attr("class", "slices");
+var labels_group = svg.append("g")
+    .attr("class", "labels");
+var lines_group = svg.append("g")
+    .attr("class", "lines");
+
+/* ------- SLICE -------*/
+
+var arcs = svg.selectAll("slices")
+    .data(pie(values))
+    
+    .enter().append("path")
+    .attr("stroke", "white")
+    .attr("stroke-width", 0.5)
+    .attr("fill", function (d, i) {
+    console.log(d);
+    return colors[i];
+    })
+    .attr("d", tempArc);
+
+arcs.transition()
+    .duration(800)
+    .delay(200)
+    .attr("d", arc);
+
+/* ------- SLICE TO TEXT LINES -------*/
+
+var lines = svg.selectAll("lines")
+    .data(pie(values).filter(function(d){return d.data >0;}))
+
+lines.enter()
+    .append("line")
+        .attr("x1", 0)
+        .attr("x2", 0)
+        .attr("y1", radius-55)
+        .attr("y2", radius-50)
+        .attr("stroke", "gray")
+        .attr("transform", function(d) {
+            return "rotate(" + ((d.startAngle+d.endAngle)/2 * (180/Math.PI)+180) + ")";
+        });
+
+lines.transition()
+      .attr("y1", radius-50)
+      .attr("y2", radius -20)
+
+
+lines.exit().remove();
+
+
+/* ------- TEXT LABELS -------*/
+var labels = svg.selectAll("labels")
+    .data(pie(values).filter(function(d){return d.data >0;}));
+
+labels.enter()
+    .append("text")
+      .attr("transform", function(d) { 
+        return "translate(" + outerArc.centroid(d) + ")";
+      })
+      .attr("text-anchor", "middle")
+      .style("font", "0px neue helvetica")
+      .text(function(d,i) { return names[i]; });
+
+
+labels.transition()
+      .style("font", "12px neue helvetica")
+
+
+</script>

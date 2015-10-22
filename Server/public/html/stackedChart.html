@@ -1,0 +1,156 @@
+var titleElement = document.getElementById('headTitle'+webLoc);
+titleElement.innerHTML = pageTitle;
+
+
+var margin = {top: 40, right: 10, bottom: 10, left: 10},
+    width = 1000 - margin.left - margin.right,
+    height = 550 - margin.top - margin.bottom;
+
+
+
+var data = [{Titles:titles1, valueYes:values1[0], valueNo: values1[1],myChoice: partValues1[0]},
+            {Titles:titles2, valueYes:values2[0], valueNo: values2[1],myChoice: partValues2[0]},
+            {Titles:titles3, valueYes:values3[0], valueNo: values3[1],myChoice: partValues3[0]},
+            {Titles:titles4, valueYes:values4[0], valueNo: values4[1],myChoice: partValues4[0]}]
+
+
+var totalNum = 0
+for (i = 0; i <4;i++){
+  totalNum+= data[i].valueYes;
+  totalNum+= data[i].valueNo;
+}
+
+
+totalNum = totalNum/10
+
+
+
+var mainValueYes = [data[0].valueYes,data[1].valueYes,data[2].valueYes,data[3].valueYes];
+var mainValueNo = [data[0].valueNo,data[1].valueNo,data[2].valueNo,data[3].valueNo];
+
+
+
+var x = d3.scale.linear()
+    .range([0, 1000])
+    .domain([-100,100])
+
+
+var y = d3.scale.ordinal()
+    .rangeRoundBands([0, height*1.1], .2)
+    .domain(data.map(function(d) {return d.Titles; }));
+
+
+
+var svg = d3.select("#wrapper"+webLoc).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+
+/* ------- BARS LEFT (VALUE YES) -------*/
+
+
+ 
+var Yes_bar =  svg.selectAll(".positive")
+                  .data(data)
+                .enter().append("rect")
+                  .attr("class", function(d) { return "bar positive"; })
+                  .attr("x", function(d) {
+                    return x(Math.min(0, - d.valueYes/(d.valueYes+d.valueNo)*100));})
+                  .attr("y", function(d) { return y(d.Titles); })
+                  .attr("width", function(d) { return Math.abs(x(d.valueYes/(d.valueYes+d.valueNo)*100) - x(0));})
+                  .attr("height", function(d) { return y.rangeBand()*0.4});
+
+Yes_bar.filter(function(d){return d.myChoice==1}).transition()
+    .duration(800)
+    .delay(400)
+    .style({'stroke': 'Black', 'stroke-width': '0.5px', "stroke-dasharray": ("10,3")});
+
+
+
+var PercentageYes = svg.selectAll("Yes_bar")
+    .data(data)
+    .enter().append("text").filter(function(d) {return d.valueYes!=0})
+    .attr("x", function(d) { return x(Math.min(0, -d.valueYes/(d.valueYes+d.valueNo)*100));})
+    .attr("y", function(d) { return y(d.Titles); })
+    .attr("dx", -10)
+    .attr("dy", 26)
+    .style("font", "16px helvetica")
+    .style("font-weight", 200)
+    .attr("fill","black")
+    .attr("text-anchor", "end")
+    .text(function(d){return (d.valueYes/(d.valueYes+d.valueNo)*100).toFixed(0) + "%"});
+
+
+var labelYes = svg.selectAll("Yes_bar")
+    .data(data)
+    .enter().append("text").filter(function(d) {return d.valueYes!=0})
+    .attr("x", function(d) { return x(Math.min(0, -d.valueYes/(d.valueYes+d.valueNo)*100));})
+    .attr("y", function(d) { return y(d.Titles); })
+    .attr("dx", 26)
+    .attr("dy", 56)
+    .style("font", "16px helvetica")
+    .style("font-weight", 200)
+    .attr("fill","black")
+    .attr("text-anchor", "end")
+    .text("Yes");
+
+/* ------- BARS RIGHT (VALUE NO) -------*/
+
+var No_bar =  svg.selectAll("negative")
+                  .data(data)
+                .enter().append("rect")
+                  .attr("class", function(d) { return "bar negative"; })
+                  .attr("x", function(d) { return x(0);})
+                  .attr("y", function(d) { return y(d.Titles); })
+                  .attr("width", function(d) { return Math.abs(x(d.valueNo/(d.valueYes+d.valueNo)*100) - x(0));})
+                  .attr("height", function(d) { return y.rangeBand()*0.4});
+
+No_bar.filter(function(d){return d.myChoice==0}).transition()
+    .duration(800)
+    .delay(400)
+    .style({'stroke': 'Black', 'stroke-width': '0.5px', "stroke-dasharray": ("10,3")});
+
+
+var PercentageNo = svg.selectAll("No_bar")
+    .data(data)
+    .enter().append("text").filter(function(d) {return d.valueNo!=0})
+    .attr("x", function(d) { return  Math.abs(x(d.valueNo/(d.valueYes+d.valueNo)*100));})
+    .attr("y", function(d) { return y(d.Titles); })
+    .attr("dx", 34)
+    .attr("dy", 26)
+    .style("font", "16px helvetica")
+    .style("font-weight", 200)
+    .attr("fill","black")
+    .attr("text-anchor", "end")
+    .text(function(d){return (d.valueNo/(d.valueYes+d.valueNo)*100).toFixed(0) + "%" });
+
+var labelNo = svg.selectAll("No_bar")
+    .data(data)
+    .enter().append("text").filter(function(d) {return d.valueNo!=0})
+    .attr("x", function(d) { return Math.abs(x(d.valueNo/(d.valueYes+d.valueNo)*100));})
+    .attr("y", function(d) { return y(d.Titles); })
+    .attr("dx", 0)
+    .attr("dy", 56)
+    .style("font", "16px helvetica")
+    .style("font-weight", 200)
+    .attr("fill","black")
+    .attr("text-anchor", "end")
+    .text("No");
+
+/* ------- TITLE LABEL BAR  -------*/
+
+var label = svg.selectAll("No_bar")
+    .data(data)
+    .enter().append("text")
+    .attr("x", function(d) { return x(0);})
+    .attr("y", function(d) { return y(d.Titles); })
+    .attr("dx", -300)
+    .attr("dy", -20)
+    .style("font", "20px helvetica")
+    .style("font-weight",200)
+    .attr("text-anchor", "start")
+    .text(function(d){return d.Titles});

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<header>
+  <meta charset="utf-8">
+  <script src="d3.v3.min.js"></script>
+  <title>Citizen-led Sensors Data Visualization</title>
+</header>
+
+<style>
+
+html, body, .wrapper {
+    height:90%;       
+    width: 100%;       
+    margin: 0;       
+    padding: 0;
+    border: 0;
+  }
+
+.wrapper td {   
+  text-align: center;
+}
+
+h2 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: black; 
+    font-weight: 200; 
+    font-size: 26px;
+
+
+}
+
+/* ---------- pie chart css --------------*/
+
+polyline{
+  opacity: .3;
+  stroke: grey;
+  stroke-width: 2px;
+  fill: none;
+}
+
+/* ---------- bar chart css --------------*/
+
+.positive {
+  fill: #C7E89E;
+}
+
+.negative {
+  fill: #FEC574;
+}
+
+/* ---------- bubble chart css --------------*/
+
+circle {
+  fill: white;
+  fill-opacity: .35;
+  stroke-width: 1px;
+}
+
+
+</style>
+
+
+<body>
+<br>
+<br>
+<br>
+<br>
+
+<table class="wrapper" class= "headTitle">
+   
+  <tr><td><h2 id="headTitle1"></h2></td></tr>
+    <tr><td id="wrapper1"></td></tr>
+
+    <tr><td><h2 id="headTitle2"></h2></td></tr>  
+    <tr><td id="wrapper2"></td></tr>
+
+    <tr><td><h2 id="headTitle3"></h2></td></tr>
+    <tr><td id="wrapper3"></td></tr>
+
+    <tr><td><h2 id="headTitle4"></h2></td></tr>
+    <tr><td id="wrapper4"></td></tr>
+
+    <tr><td><h2 id="headTitle5"></h2></td></tr>
+    <tr><td id="wrapper5"></td></tr>
+
+    <tr><td><h2 id="headTitle6"></h2></td></tr>
+    <tr><td id="wrapper6"></td></tr>
+
+    <tr><td><h2 id="headTitle7"></h2></td></tr>
+    <tr><td id="wrapper7"></td></tr>
+
+    <tr><td><h2 id="headTitle8"></h2></td></tr>
+    <tr><td id="wrapper8"></td></tr>
+
+    <tr><td><h2 id="headTitle9"></h2></td></tr>
+    <tr><td id="wrapper9"></td></tr>
+
+    <tr><td><h2 id="headTitle10"></h2></td></tr>
+    <tr><td id="wrapper10"></td></tr>
+
+    <tr><td><h2 id="headTitle11"></h2></td></tr>
+    <tr><td id="wrapper11"></td></tr>
+
+    <td><td><h2 id="headTitle12"></h2></td></tr>
+    <tr><td id="wrapper12"></td></tr>
+
+    <tr><td><h2 id="headTitle13"></h2></td></tr>
+    <tr><td id="wrapper13"></td></tr>
+
+    <tr><td><h2 id="headTitle14"></h2></td></tr>
+    <tr><td id="wrapper14"></td></tr>
+
+    <tr><td><h2 id="headTitle15"></h2></td></tr>
+    <tr><td id="wrapper15"></td></tr>
+
+    <tr><td><h2 id="headTitle16"></h2></td></tr>
+    <tr><td id="wrapper16"></td></tr>
+
+    <tr><td><h2 id="headTitle17"></h2></td></tr>
+    <tr><td id="wrapper17"></td></tr>
+
+    <tr><td><h2 id="headTitle18"></h2></td></tr>
+    <tr><td id="wrapper18"></td></tr>
+
+    <tr><td><h2 id="headTitle19"></h2></td></tr>
+    <tr><td id="wrapper19"></td></tr>
+
+    <tr><td><h2 id="headTitle20"></h2></td></tr>
+    <tr><td id="wrapper20"></td></tr>
+
+</table>
+
+
+<script>
