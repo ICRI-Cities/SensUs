@@ -2,7 +2,7 @@
  * Created by sarahg on 20/10/15.
  */
 
-var httpPort = 6543;
+var httpPort = 5432;
 
 var url = require('url');
 
